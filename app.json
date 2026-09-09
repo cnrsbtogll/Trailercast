@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "TrailCast",
+    "slug": "trailcast",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "scheme": "trailcast",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "app.trailcast.ios",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "TrailCast uses your location only when the app is open, to fetch weather for your current spot. We never store it or send it to a server.",
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "app.trailcast.android",
+      "permissions": [
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "TrailCast uses your location only when the app is open, to fetch weather for your current spot. We never store it or send it to a server."
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true,
+      "tsconfigPaths": true
+    },
+    "assets": []
+  }
+}
