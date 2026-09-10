@@ -21,6 +21,9 @@ export type StringKey =
   | 'today.cloudCover'
   | 'today.addPin'
   | 'today.logSession'
+  | 'today.location.loading'
+  | 'today.location.denied'
+  | 'today.location.current'
   | 'log.title'
   | 'log.empty'
   | 'log.newCta'
@@ -75,6 +78,9 @@ const TR: Strings = {
   'today.cloudCover': 'Bulut',
   'today.addPin': 'Patika noktası ekle',
   'today.logSession': 'Antrenman kaydet',
+  'today.location.loading': 'Konum alınıyor…',
+  'today.location.denied': 'Konum izni verilmedi — demo konum gösteriliyor',
+  'today.location.current': 'Mevcut konum',
   'log.title': 'Günlük',
   'log.empty': 'Henüz kayıt yok. İlk antrenmanını ekle.',
   'log.newCta': 'Yeni antrenman',
@@ -128,6 +134,9 @@ const EN: Strings = {
   'today.cloudCover': 'Cloud',
   'today.addPin': 'Add trail pin',
   'today.logSession': 'Log session',
+  'today.location.loading': 'Getting location…',
+  'today.location.denied': 'Location permission denied — showing demo location',
+  'today.location.current': 'Current location',
   'log.title': 'Log',
   'log.empty': 'No sessions yet. Log your first run.',
   'log.newCta': 'New session',
@@ -181,6 +190,9 @@ const DE: Strings = {
   'today.cloudCover': 'Wolken',
   'today.addPin': 'Trail-Pin hinzufügen',
   'today.logSession': 'Sitzung protokollieren',
+  'today.location.loading': 'Standort wird ermittelt…',
+  'today.location.denied': 'Standort verweigert — Demo-Standort wird angezeigt',
+  'today.location.current': 'Aktueller Standort',
   'log.title': 'Tagebuch',
   'log.empty': 'Noch keine Einträge. Erste Einheit erfassen.',
   'log.newCta': 'Neue Einheit',
