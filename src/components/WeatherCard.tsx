@@ -66,7 +66,7 @@ export function PrecipStripCard({ hours, testID = 'today-precip-strip' }: Precip
     <View style={styles.precipCard} testID={testID}>
       <Text style={styles.sectionTitle}>{t(language, 'today.precip.next6h')}</Text>
       <View style={styles.stripRow}>
-        {hours.map((h) => {
+        {hours.slice(0, 6).map((h) => {
           const hh = h.time.slice(11, 16); // "HH:MM"
           const mm = h.precipitationMm === null ? '—' : h.precipitationMm.toFixed(1);
           const pct = h.precipitationProbPct === null ? '—' : `${h.precipitationProbPct}%`;
@@ -131,9 +131,9 @@ const styles = StyleSheet.create({
     color: '#475569',
     marginBottom: 8,
   },
-  stripRow: { flexDirection: 'row', justifyContent: 'space-between' },
-  stripCell: { alignItems: 'center', flex: 1 },
-  stripTime: { fontSize: 12, color: '#64748B' },
+  stripRow: { flexDirection: 'row', justifyContent: 'space-between', gap: 6 },
+  stripCell: { alignItems: 'center', flex: 1, minWidth: 0 },
+  stripTime: { fontSize: 11, color: '#64748B', textAlign: 'center' },
   stripMm: { fontSize: 14, fontWeight: '600', color: '#0F172A', marginTop: 2 },
   stripPct: { fontSize: 11, color: '#94A3B8', marginTop: 1 },
   row: { flexDirection: 'row', gap: 8 },
