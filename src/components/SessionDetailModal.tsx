@@ -1,6 +1,6 @@
 import { Modal, View, Text, Pressable, StyleSheet, ScrollView } from 'react-native';
 import { useSettings } from '@/state/settings';
-import { t } from '@/i18n/strings';
+import { t, type StringKey } from '@/i18n/strings';
 import type { SessionRow } from '@/db/schema';
 
 const TYPE_EMOJI: Record<string, string> = { run: '🏃', ride: '🚴', hike: '🥾', walk: '🚶', other: '◍' };
@@ -36,7 +36,7 @@ export function SessionDetailModal({ session, onClose, onDelete }: { session: Se
           <ScrollView style={styles.scroll} contentContainerStyle={styles.scrollContent}>
             <View style={styles.hero}>
               <Text style={styles.heroEmoji}>{TYPE_EMOJI[session.activity_type] ?? '◍'}</Text>
-              <Text style={styles.heroType}>{t(language, `activity.${session.activity_type}` as any)}</Text>
+              <Text style={styles.heroType}>{t(language, `activity.${session.activity_type}` as StringKey)}</Text>
               <Text style={styles.heroDate}>{fmtDate(session.started_at, language)}</Text>
             </View>
 

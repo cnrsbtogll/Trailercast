@@ -16,7 +16,7 @@ import {
   Platform,
 } from 'react-native';
 import { useSettings } from '@/state/settings';
-import { t } from '@/i18n/strings';
+import { t, type StringKey } from '@/i18n/strings';
 import type { ActivityType } from '@/db/schema';
 import { insertSession } from '@/db/sessions';
 import * as Location from 'expo-location';
@@ -175,7 +175,7 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
                       ]}
                     >
                       <Text style={[styles.chipEmoji]}>{ACTIVITY_EMOJI[a]}</Text>
-                      <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{t(language, `activity.${a}` as any)}</Text>
+                      <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{t(language, `activity.${a}` as StringKey)}</Text>
                     </Pressable>
                   );
                 })}

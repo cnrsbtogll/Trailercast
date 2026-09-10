@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, FlatList, Alert } from 'react-native';
 import { useSettings } from '@/state/settings';
-import { t } from '@/i18n/strings';
+import { t, type StringKey } from '@/i18n/strings';
 import { LogModal } from '@/components/LogModal';
 import { SessionDetailModal } from '@/components/SessionDetailModal';
 import { getSessions, deleteSession } from '@/db/sessions';
@@ -35,7 +35,7 @@ function SessionCard({ item, onDelete, onPress }: { item: SessionRow; onDelete: 
   const km = item.distance_m !== null ? (item.distance_m / 1000).toFixed(1) : null;
   const minShort = t(language, 'common.unit.minShort');
   const kmUnit = t(language, 'common.unit.km');
-  const locationLabel = (item as any).session_city as string | null;
+  const locationLabel = item.session_city ?? null;
   return (
     <Pressable
       onPress={() => onPress(item)}
@@ -45,7 +45,7 @@ function SessionCard({ item, onDelete, onPress }: { item: SessionRow; onDelete: 
       <View style={styles.cardTop}>
         <Text style={styles.cardEmoji}>{TYPE_EMOJI[item.activity_type] ?? '◍'}</Text>
         <View style={styles.cardMain}>
-          <Text style={styles.cardType}>{t(language, `activity.${item.activity_type}` as any)}</Text>
+          <Text style={styles.cardType}>{t(language, `activity.${item.activity_type}` as StringKey)}</Text>
           <Text style={styles.cardMeta}>
             {mins} {minShort}{km ? ` · ${km} ${kmUnit}` : ''} {item.rpe !== null ? `· RPE ${item.rpe}` : ''}
           </Text>
