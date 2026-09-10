@@ -24,9 +24,7 @@ jobs:
         run: npx jest --ci --verbose 2>&1 | tee /tmp/jest.log; test ${PIPESTATUS[0]} -eq 0
       - if: failure()
         run: |
-          cp /tmp/jest.log ./jest-ci-failure.log || echo "no log" > ./jest-ci-failure.log
-          git config user.name "ci-bot"
-          git config user.email "ci-bot@trailcast"
-          git add jest-ci-failure.log || true
-          git commit -m "ci: jest log" || true
-          git push || true
+          echo "=== JEST FAILURES ==="
+          grep -E "FAIL|●" /tmp/jest.log | head -n 50 || true
+          echo "--- full tail ---"
+          tail -n 100 /tmp/jest.log || true
