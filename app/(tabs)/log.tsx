@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable, FlatList, Alert } from 'react-native
 import { useSettings } from '@/state/settings';
 import { t } from '@/i18n/strings';
 import { LogModal } from '@/components/LogModal';
+import { SessionDetailModal } from '@/components/SessionDetailModal';
 import { getSessions, deleteSession } from '@/db/sessions';
 import type { SessionRow } from '@/db/schema';
 
@@ -28,14 +29,19 @@ const TYPE_EMOJI: Record<string, string> = {
   other: '◍',
 };
 
-function SessionCard({ item, onDelete }: { item: SessionRow; onDelete: (id: number) => void }) {
+function SessionCard({ item, onDelete, onPress }: { item: SessionRow; onDelete: (id: number) => void; onPress: (item: SessionRow) => void }) {
   const language = useSettings((s) => s.language);
   const mins = Math.round(item.duration_sec / 60);
   const km = item.distance_m !== null ? (item.distance_m / 1000).toFixed(1) : null;
   const minShort = t(language, 'common.unit.minShort');
   const kmUnit = t(language, 'common.unit.km');
+  const locationLabel = (item as any).session_city as string | null;
   return (
-    <View style={styles.card} testID={`session-${item.id}`}>
+    <Pressable
+      onPress={() => onPress(item)}
+      style={({ pressed }) => [styles.card, pressed && { opacity: 0.86 }]}
+      testID={`session-${item.id}`}
+    >
       <View style={styles.cardTop}>
         <Text style={styles.cardEmoji}>{TYPE_EMOJI[item.activity_type] ?? '◍'}</Text>
         <View style={styles.cardMain}>
@@ -45,17 +51,22 @@ function SessionCard({ item, onDelete }: { item: SessionRow; onDelete: (id: numb
           </Text>
         </View>
         <Pressable
-          onPress={() => onDelete(item.id)}
+          onPress={(e) => {
+            e.stopPropagation?.();
+            onDelete(item.id);
+          }}
           testID={`delete-session-${item.id}`}
           style={({ pressed }) => [styles.deleteBtn, pressed && { opacity: 0.7 }]}
           accessibilityLabel={t(language, 'log.card.delete')}
+          hitSlop={8}
         >
           <Text style={styles.deleteText}>✕</Text>
         </Pressable>
       </View>
+      {locationLabel ? <Text style={styles.cardLocation}>📍 {locationLabel}</Text> : null}
       <Text style={styles.cardDate}>{fmtDate(item.started_at, language)}</Text>
-      {item.note ? <Text style={styles.cardNote}>{item.note}</Text> : null}
-    </View>
+      {item.note ? <Text style={styles.cardNote} numberOfLines={2}>{item.note}</Text> : null}
+    </Pressable>
   );
 }
 
@@ -64,6 +75,7 @@ export default function LogScreen() {
   const [sessions, setSessions] = useState<SessionRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const [selected, setSelected] = useState<SessionRow | null>(null);
 
   const refresh = useCallback(async () => {
     try {
@@ -127,7 +139,7 @@ export default function LogScreen() {
           <FlatList
             data={sessions}
             keyExtractor={(item) => String(item.id)}
-            renderItem={({ item }) => <SessionCard item={item} onDelete={handleDelete} />}
+            renderItem={({ item }) => <SessionCard item={item} onDelete={handleDelete} onPress={setSelected} />}
             contentContainerStyle={styles.listContent}
             testID="session-list"
           />
@@ -135,6 +147,7 @@ export default function LogScreen() {
       )}
 
       <LogModal visible={modalOpen} onClose={() => setModalOpen(false)} onSaved={refresh} />
+      <SessionDetailModal session={selected} onClose={() => setSelected(null)} onDelete={handleDelete} />
     </View>
   );
 }
@@ -201,6 +214,7 @@ const styles = StyleSheet.create({
   cardMain: { flex: 1, gap: 2 },
   cardType: { fontSize: 15, fontWeight: '800', color: '#0F172A', textTransform: 'capitalize' },
   cardMeta: { fontSize: 13, color: '#64748B', fontWeight: '500' },
+  cardLocation: { fontSize: 12, color: '#0F172A', fontWeight: '600' },
   cardDate: { fontSize: 11, color: '#94A3B8', fontWeight: '600', letterSpacing: 0.3 },
   cardNote: {
     fontSize: 13,

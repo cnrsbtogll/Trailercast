@@ -15,7 +15,7 @@
  * current SCHEMA_VERSION after a successful run).
  */
 import * as SQLite from 'expo-sqlite';
-import { SCHEMA_SQL, SCHEMA_VERSION } from './schema';
+import { MIGRATION_V2_SQL, SCHEMA_SQL, SCHEMA_VERSION } from './schema';
 
 export interface MigrationResult {
   applied: readonly number[];
@@ -28,6 +28,15 @@ export async function runMigrations(
   // Run every DDL statement.
   for (const stmt of SCHEMA_SQL) {
     await db.execAsync(stmt);
+  }
+
+  // v1→v2: adhoc session location columns — idempotent (ALTER fails if column exists → ignore)
+  for (const stmt of MIGRATION_V2_SQL) {
+    try {
+      await db.execAsync(stmt);
+    } catch {
+      // already migrated
+    }
   }
 
   // Check existing version.

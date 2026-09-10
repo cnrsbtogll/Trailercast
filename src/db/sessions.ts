@@ -14,6 +14,9 @@ export interface NewSessionInput {
   location_id?: number | null;
   weather_snapshot_id?: number | null;
   started_at?: string;
+  session_city?: string | null;
+  session_lat?: number | null;
+  session_lon?: number | null;
 }
 
 export async function insertSession(input: NewSessionInput): Promise<SessionRow> {
@@ -22,8 +25,8 @@ export async function insertSession(input: NewSessionInput): Promise<SessionRow>
   const startedAt = input.started_at ?? now;
   const result = await db.runAsync(
     `INSERT INTO sessions
-       (location_id, activity_type, started_at, duration_sec, distance_m, rpe, note, weather_snapshot_id, created_at)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`,
+       (location_id, activity_type, started_at, duration_sec, distance_m, rpe, note, weather_snapshot_id, created_at, session_city, session_lat, session_lon)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`,
     input.location_id ?? null,
     input.activity_type,
     startedAt,
@@ -33,6 +36,9 @@ export async function insertSession(input: NewSessionInput): Promise<SessionRow>
     input.note ?? null,
     input.weather_snapshot_id ?? null,
     now,
+    input.session_city ?? null,
+    input.session_lat ?? null,
+    input.session_lon ?? null,
   );
   const rows = await db.getAllAsync<SessionRow>(
     'SELECT * FROM sessions WHERE rowid = ?;',

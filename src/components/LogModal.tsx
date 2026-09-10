@@ -19,6 +19,7 @@ import { useSettings } from '@/state/settings';
 import { t } from '@/i18n/strings';
 import type { ActivityType } from '@/db/schema';
 import { insertSession } from '@/db/sessions';
+import * as Location from 'expo-location';
 
 const ACTIVITIES: readonly ActivityType[] = ['run', 'ride', 'hike', 'walk', 'other'] as const;
 
@@ -84,6 +85,34 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
     try {
       const durMin = parseFloat(durationMin.replace(',', '.').replace('/', '.'));
       const distKm = distanceKm.trim() ? parseFloat(distanceKm.replace(',', '.').replace('/', '.')) : null;
+
+      // ponytail: best-effort location — don't block save if denied/unavailable
+      let session_city: string | null = null;
+      let session_lat: number | null = null;
+      let session_lon: number | null = null;
+      try {
+        const perm = await Location.getForegroundPermissionsAsync();
+        let granted = perm.granted;
+        if (!granted && perm.canAskAgain && perm.status === 'undetermined') {
+          const req = await Location.requestForegroundPermissionsAsync();
+          granted = req.granted;
+        }
+        if (granted) {
+          const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+          session_lat = pos.coords.latitude;
+          session_lon = pos.coords.longitude;
+          try {
+            const places = await Location.reverseGeocodeAsync({ latitude: session_lat, longitude: session_lon });
+            const p = places[0];
+            session_city = p?.city ?? p?.subregion ?? p?.region ?? null;
+          } catch {
+            // ignore geocode error
+          }
+        }
+      } catch {
+        // ignore location capture error
+      }
+
       await insertSession({
         activity_type: activity,
         duration_sec: Math.round(durMin * 60),
@@ -91,6 +120,9 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
         rpe: rpe ?? null,
         note: note.trim() ? note.trim().slice(0, 280) : null,
         started_at: new Date().toISOString(),
+        session_city,
+        session_lat,
+        session_lon,
       });
       reset();
       onSaved();

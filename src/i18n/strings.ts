@@ -42,6 +42,14 @@ export type StringKey =
   | 'log.count_one'
   | 'log.count_other'
   | 'log.card.delete'
+  | 'log.detail.title'
+  | 'log.detail.location'
+  | 'log.detail.duration'
+  | 'log.detail.distance'
+  | 'log.detail.rpe'
+  | 'log.detail.note'
+  | 'log.detail.date'
+  | 'log.detail.coords'
   | 'common.unit.minShort'
   | 'common.unit.km'
   | 'activity.run'
@@ -99,6 +107,14 @@ const TR: Strings = {
   'log.count_one': '{{count}} antrenman',
   'log.count_other': '{{count}} antrenman',
   'log.card.delete': 'Sil',
+  'log.detail.title': 'Antrenman detayı',
+  'log.detail.location': 'Konum',
+  'log.detail.duration': 'Süre',
+  'log.detail.distance': 'Mesafe',
+  'log.detail.rpe': 'Efor',
+  'log.detail.note': 'Not',
+  'log.detail.date': 'Tarih',
+  'log.detail.coords': 'Koordinat',
   'common.unit.minShort': 'dk',
   'common.unit.km': 'km',
   'activity.run': 'Koşu',
@@ -155,6 +171,14 @@ const EN: Strings = {
   'log.count_one': '{{count}} session',
   'log.count_other': '{{count}} sessions',
   'log.card.delete': 'Delete',
+  'log.detail.title': 'Session detail',
+  'log.detail.location': 'Location',
+  'log.detail.duration': 'Duration',
+  'log.detail.distance': 'Distance',
+  'log.detail.rpe': 'Effort',
+  'log.detail.note': 'Note',
+  'log.detail.date': 'Date',
+  'log.detail.coords': 'Coords',
   'common.unit.minShort': 'min',
   'common.unit.km': 'km',
   'activity.run': 'Run',
@@ -211,6 +235,14 @@ const DE: Strings = {
   'log.count_one': '{{count}} Einheit',
   'log.count_other': '{{count}} Einheiten',
   'log.card.delete': 'Löschen',
+  'log.detail.title': 'Einheit-Detail',
+  'log.detail.location': 'Ort',
+  'log.detail.duration': 'Dauer',
+  'log.detail.distance': 'Distanz',
+  'log.detail.rpe': 'Anstrengung',
+  'log.detail.note': 'Notiz',
+  'log.detail.date': 'Datum',
+  'log.detail.coords': 'Koordinaten',
   'common.unit.minShort': 'Min.',
   'common.unit.km': 'km',
   'activity.run': 'Laufen',

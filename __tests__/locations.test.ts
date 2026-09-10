@@ -37,7 +37,7 @@ describe('db boot + locations round-trip (slice 1)', () => {
     const version = await db.getFirstAsync<{ version: number }>(
       'SELECT version FROM schema_meta;',
     );
-    expect(version?.version).toBe(1);
+    expect(version?.version).toBe(2);
   });
 
   it('re-running boot is idempotent (alreadyUpToDate)', async () => {
@@ -48,7 +48,7 @@ describe('db boot + locations round-trip (slice 1)', () => {
     const version = await db.getFirstAsync<{ version: number }>(
       'SELECT version FROM schema_meta;',
     );
-    expect(version?.version).toBe(1);
+    expect(version?.version).toBe(2);
   });
 
   it('insert + list + count locations', async () => {

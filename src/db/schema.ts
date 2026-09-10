@@ -14,7 +14,7 @@
  * backup/restore". Migrations live in `migrate.ts`.
  */
 
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
 
 export const SCHEMA_SQL: readonly string[] = [
   // locations
@@ -50,7 +50,7 @@ export const SCHEMA_SQL: readonly string[] = [
   `CREATE INDEX IF NOT EXISTS idx_snapshots_location_time
      ON weather_snapshots(location_id, captured_at DESC);`,
 
-  // sessions (activity log)
+  // sessions (activity log) — v2 adds adhoc session location (ponytail: denormalized for cheap display)
   `CREATE TABLE IF NOT EXISTS sessions (
      id                INTEGER PRIMARY KEY AUTOINCREMENT,
      location_id       INTEGER,
@@ -63,6 +63,9 @@ export const SCHEMA_SQL: readonly string[] = [
      note              TEXT    CHECK (length(note) <= 280),
      weather_snapshot_id INTEGER,
      created_at        TEXT    NOT NULL,
+     session_city      TEXT,
+     session_lat       REAL,
+     session_lon       REAL,
      FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE SET NULL,
      FOREIGN KEY (weather_snapshot_id) REFERENCES weather_snapshots(id)
        ON DELETE SET NULL
@@ -77,6 +80,13 @@ export const SCHEMA_SQL: readonly string[] = [
      version   INTEGER PRIMARY KEY,
      applied_at TEXT    NOT NULL
    );`,
+];
+
+// v1 → v2 adhoc location columns for existing DBs (CREATE TABLE above covers fresh installs)
+export const MIGRATION_V2_SQL: readonly string[] = [
+  `ALTER TABLE sessions ADD COLUMN session_city TEXT;`,
+  `ALTER TABLE sessions ADD COLUMN session_lat REAL;`,
+  `ALTER TABLE sessions ADD COLUMN session_lon REAL;`,
 ];
 
 export type ActivityType = 'run' | 'ride' | 'hike' | 'walk' | 'other';
@@ -118,4 +128,7 @@ export interface SessionRow {
   note: string | null;
   weather_snapshot_id: number | null;
   created_at: string;
+  session_city: string | null;
+  session_lat: number | null;
+  session_lon: number | null;
 }
