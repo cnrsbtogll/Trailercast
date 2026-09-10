@@ -65,24 +65,32 @@ export function PrecipStripCard({ hours, testID = 'today-precip-strip' }: Precip
   const nowHour = new Date().toISOString().slice(0, 13); // YYYY-MM-DDTHH
   const startIdx = hours.findIndex((h) => h.time.slice(0, 13) >= nowHour);
   const display = startIdx >= 0 ? hours.slice(startIdx, startIdx + 6) : hours.slice(0, 6);
+  const hasRain = display.some((h) => (h.precipitationMm ?? 0) > 0 || (h.precipitationProbPct ?? 0) > 0);
 
   return (
     <View style={styles.precipCard} testID={testID}>
       <Text style={styles.sectionTitle}>{t(language, 'today.precip.next6h')}</Text>
-      <View style={styles.stripRow}>
-        {display.map((h) => {
-          const hh = h.time.slice(11, 16); // "HH:MM"
-          const mm = h.precipitationMm === null ? '—' : h.precipitationMm.toFixed(1);
-          const pct = h.precipitationProbPct === null ? '—' : `${h.precipitationProbPct}%`;
-          return (
-            <View key={h.time} style={styles.stripCell} testID={`strip-${hh}`}>
-              <Text style={styles.stripTime}>{hh}</Text>
-              <Text style={styles.stripMm}>{mm} mm</Text>
-              <Text style={styles.stripPct}>{pct}</Text>
-            </View>
-          );
-        })}
-      </View>
+      {hasRain ? (
+        <View style={styles.stripRow}>
+          {display.map((h) => {
+            const hh = h.time.slice(11, 16); // "HH:MM"
+            const mm = h.precipitationMm === null ? '—' : h.precipitationMm.toFixed(1);
+            const pct = h.precipitationProbPct === null ? '—' : `${h.precipitationProbPct}%`;
+            return (
+              <View key={h.time} style={styles.stripCell} testID={`strip-${hh}`}>
+                <Text style={styles.stripTime}>{hh}</Text>
+                <Text style={styles.stripMm}>{mm} mm</Text>
+                <Text style={styles.stripPct}>{pct}</Text>
+              </View>
+            );
+          })}
+        </View>
+      ) : (
+        <View style={styles.emptyRow} testID="precip-empty">
+          <Text style={styles.emptyText}>☀️ {t(language, 'today.precip.none')}</Text>
+          <Text style={styles.emptySubtext}>{t(language, 'today.precip.noneHint')}</Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -140,6 +148,9 @@ const styles = StyleSheet.create({
   stripTime: { fontSize: 11, color: '#64748B', textAlign: 'center' },
   stripMm: { fontSize: 14, fontWeight: '600', color: '#0F172A', marginTop: 2 },
   stripPct: { fontSize: 11, color: '#94A3B8', marginTop: 1 },
+  emptyRow: { alignItems: 'center', paddingVertical: 12, gap: 4 },
+  emptyText: { fontSize: 14, fontWeight: '600', color: '#0F172A', textAlign: 'center' },
+  emptySubtext: { fontSize: 12, color: '#64748B', textAlign: 'center' },
   row: { flexDirection: 'row', gap: 8 },
   rowItem: {
     flex: 1,

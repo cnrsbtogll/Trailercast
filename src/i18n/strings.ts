@@ -14,6 +14,8 @@ export type StringKey =
   | 'today.hero.feels'
   | 'today.precip.strip'
   | 'today.precip.next6h'
+  | 'today.precip.none'
+  | 'today.precip.noneHint'
   | 'today.wind'
   | 'today.humidity'
   | 'today.cloudCover'
@@ -51,6 +53,8 @@ const TR: Strings = {
   'today.hero.feels': 'Hissedilen',
   'today.precip.strip': 'Yağış şeridi',
   'today.precip.next6h': 'Önümüzdeki 6 saat',
+  'today.precip.none': 'Yağış beklenmiyor',
+  'today.precip.noneHint': 'Açık hava için ideal — 6 saat boyunca kuru',
   'today.wind': 'Rüzgâr',
   'today.humidity': 'Nem',
   'today.cloudCover': 'Bulut',
@@ -87,6 +91,8 @@ const EN: Strings = {
   'today.hero.feels': 'Feels like',
   'today.precip.strip': 'Precipitation strip',
   'today.precip.next6h': 'Next 6 hours',
+  'today.precip.none': 'No rain expected',
+  'today.precip.noneHint': 'Ideal for outdoors — dry for the next 6 hours',
   'today.wind': 'Wind',
   'today.humidity': 'Humidity',
   'today.cloudCover': 'Cloud',
@@ -123,6 +129,8 @@ const DE: Strings = {
   'today.hero.feels': 'Gefühlt',
   'today.precip.strip': 'Niederschlags-Streifen',
   'today.precip.next6h': 'Nächste 6 Stunden',
+  'today.precip.none': 'Kein Regen erwartet',
+  'today.precip.noneHint': 'Ideal für draußen — 6 Stunden trocken',
   'today.wind': 'Wind',
   'today.humidity': 'Feuchte',
   'today.cloudCover': 'Wolken',
