@@ -19,9 +19,14 @@ import type {
 
 export interface TodayFixture {
   readonly city: string;
+  readonly country: string;
+  readonly latitude: number;
+  readonly longitude: number;
   readonly capturedAt: string; // ISO timestamp the fixture pretends to be from
   readonly current: CurrentWeather;
   readonly precip: HourlyPrecipitation;
+  readonly cached: boolean;
+  readonly fetchedAt: string;
 }
 
 /**
@@ -32,6 +37,9 @@ export interface TodayFixture {
  */
 export const ANKARA_FIXTURE: TodayFixture = {
   city: 'Ankara',
+  country: 'TR',
+  latitude: 39.9334,
+  longitude: 32.8597,
   capturedAt: '2026-09-12T12:00:00Z',
   current: {
     temperatureC: 23.4,
@@ -54,6 +62,8 @@ export const ANKARA_FIXTURE: TodayFixture = {
       { time: '2026-09-12T17:00', precipitationMm: 0.2, precipitationProbPct: 25, weatherCode: 2 },
     ],
   },
+  cached: false,
+  fetchedAt: new Date().toISOString(),
 };
 
 /** Berlin fixture — colder, breezier, less cloud. */

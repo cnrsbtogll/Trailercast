@@ -1,8 +1,20 @@
-import { ScrollView, Text, StyleSheet } from 'react-native';
+import { ScrollView, Text, StyleSheet, ActivityIndicator } from 'react-native';
 import { useSettings } from '@/state/settings';
 import { t } from '@/i18n/strings';
 import { DEMO_FIXTURES } from '@/weather/fixtures';
 import { WeatherCard, PrecipStripCard, MetricsRow } from '@/components/WeatherCard';
+import { fetchWeather, weatherCache } from '@/weather/fetch';
+
+/**
+ * Today tab — PRD §3.1 / §4.
+ *
+ * Day-1 deliverable: skeleton renders on internal TestFlight. Live data
+ * wiring is Day-2 morning (slice 3 of the impl plan). For now this
+ * renders the screen with the PRD §3.1 anchor fixture (Ankara) so the
+ * layout is verifiable in a `jest-expo` snapshot test.
+ */
+import { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
 /**
  * Today tab — PRD §3.1 / §4.
@@ -22,6 +34,61 @@ export default function TodayScreen() {
     throw new Error('TodayScreen: DEMO_FIXTURES is empty');
   }
 
+  const [weather, setWeather] = useState(fixture);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function loadLiveWeather() {
+      if (!isMounted) return;
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Use the first location from DEMO_FIXTURES for live fetching
+        const fixtureLocation = DEMO_FIXTURES[0];
+        if (!fixtureLocation) throw new Error('No fixture location available');
+        
+        // Use the location's coordinates from the fixture to fetch live weather
+        const liveData = await fetchWeather(fixtureLocation.current.latitude, fixtureLocation.current.longitude);
+        
+        // Map live API response to fixture shape for component compatibility
+        const liveFixture = {
+          city: fixture.city,
+          country: fixture.country,
+          latitude: fixture.latitude,
+          longitude: fixture.longitude,
+          current: liveData.current,
+          precip: liveData.precip,
+          cached: liveData.cached,
+          fetchedAt: liveData.fetchedAt,
+        };
+        
+        if (isMounted) {
+          setWeather(liveFixture);
+        }
+      } catch (err) {
+        console.error('Failed to fetch live weather:', err);
+        if (isMounted) {
+          setError(err instanceof Error ? err.message : 'Unknown error');
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    // Attempt live fetch on mount; fall back to fixture on error
+    loadLiveWeather();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
   return (
     <ScrollView
       style={styles.container}
@@ -29,13 +96,29 @@ export default function TodayScreen() {
       testID="today-screen"
     >
       <Text style={styles.title}>{t(language, 'today.header')}</Text>
-      <Text style={styles.subtitle}>{fixture.city}</Text>
+      <Text style={styles.subtitle}>{weather.city}</Text>
 
-      <WeatherCard current={fixture.current} />
+      {loading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color="#0F172A" />
+          <Text style={styles.loadingText}>{t(language, 'today.loading')}</Text>
+        </View>
+      )}
 
-      <PrecipStripCard hours={fixture.precip.hours} />
+      {error && (
+        <View style={styles.errorContainer}>
+          <Text style={styles.errorText}>Weather fetch failed: {error}</Text>
+          <Text style={styles.fallbackText}>Showing cached fixture data.</Text>
+        </View>
+      )}
 
-      <MetricsRow current={fixture.current} />
+      {!loading && weather && (
+        <>
+          <WeatherCard current={weather.current} />
+          <PrecipStripCard hours={weather.precip.hours} />
+          <MetricsRow current={weather.current} />
+        </>
+      )}
     </ScrollView>
   );
 }
