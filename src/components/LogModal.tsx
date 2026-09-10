@@ -63,16 +63,16 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
 
   function validate(): boolean {
     const e: Record<string, string> = {};
-    if (!activity) e.activity = 'Required';
-    const dur = parseFloat(durationMin.replace(',', '.'));
-    if (!durationMin.trim()) e.duration = 'Required';
-    else if (Number.isNaN(dur) || dur <= 0) e.duration = 'Enter minutes > 0';
+    if (!activity) e.activity = t(language, 'log.modal.error.required');
+    const dur = parseFloat(durationMin.replace(',', '.').replace('/', '.'));
+    if (!durationMin.trim()) e.duration = t(language, 'log.modal.error.required');
+    else if (Number.isNaN(dur) || dur <= 0) e.duration = t(language, 'log.modal.error.duration');
     if (distanceKm.trim()) {
-      const d = parseFloat(distanceKm.replace(',', '.'));
-      if (Number.isNaN(d) || d < 0) e.distance = 'Enter km ≥ 0';
+      const d = parseFloat(distanceKm.replace(',', '.').replace('/', '.'));
+      if (Number.isNaN(d) || d < 0) e.distance = t(language, 'log.modal.error.distance');
     }
     if (rpe !== null && (rpe < 1 || rpe > 10)) e.rpe = '1–10';
-    if (note.length > 280) e.note = 'Max 280 chars';
+    if (note.length > 280) e.note = t(language, 'log.modal.error.note');
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -82,8 +82,8 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
     if (!activity) return;
     setSaving(true);
     try {
-      const durMin = parseFloat(durationMin.replace(',', '.'));
-      const distKm = distanceKm.trim() ? parseFloat(distanceKm.replace(',', '.')) : null;
+      const durMin = parseFloat(durationMin.replace(',', '.').replace('/', '.'));
+      const distKm = distanceKm.trim() ? parseFloat(distanceKm.replace(',', '.').replace('/', '.')) : null;
       await insertSession({
         activity_type: activity,
         duration_sec: Math.round(durMin * 60),
@@ -158,7 +158,7 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
               <Text style={styles.label}>{t(language, 'log.modal.duration')} *</Text>
               <TextInput
                 value={durationMin}
-                onChangeText={setDurationMin}
+                onChangeText={(v) => setDurationMin(v.replace('/', '.').replace(',', '.'))}
                 placeholder="45"
                 keyboardType="decimal-pad"
                 style={[styles.input, errors.duration && styles.inputError]}
@@ -174,7 +174,7 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
               <Text style={styles.label}>{t(language, 'log.modal.distance')}</Text>
               <TextInput
                 value={distanceKm}
-                onChangeText={setDistanceKm}
+                onChangeText={(v) => setDistanceKm(v.replace('/', '.').replace(',', '.'))}
                 placeholder="5.2"
                 keyboardType="decimal-pad"
                 style={[styles.input, errors.distance && styles.inputError]}
@@ -220,7 +220,7 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
               <TextInput
                 value={note}
                 onChangeText={(v) => setNote(v.slice(0, 280))}
-                placeholder="How did it feel?"
+                placeholder={t(language, 'log.modal.notePlaceholder')}
                 multiline
                 numberOfLines={3}
                 maxLength={280}

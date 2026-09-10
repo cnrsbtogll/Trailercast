@@ -29,8 +29,13 @@ export type StringKey =
   | 'log.modal.distance'
   | 'log.modal.rpe'
   | 'log.modal.note'
+  | 'log.modal.notePlaceholder'
   | 'log.modal.save'
   | 'log.modal.cancel'
+  | 'log.modal.error.required'
+  | 'log.modal.error.duration'
+  | 'log.modal.error.distance'
+  | 'log.modal.error.note'
   | 'settings.title'
   | 'settings.units'
   | 'settings.language'
@@ -68,8 +73,13 @@ const TR: Strings = {
   'log.modal.distance': 'Mesafe (km)',
   'log.modal.rpe': 'Efor (1–10)',
   'log.modal.note': 'Not',
+  'log.modal.notePlaceholder': 'Nasıl hissettin? (örn. rüzgâr sertti, son yokuş zordu)',
   'log.modal.save': 'Kaydet',
   'log.modal.cancel': 'Vazgeç',
+  'log.modal.error.required': 'Zorunlu',
+  'log.modal.error.duration': 'Dakika > 0 gir',
+  'log.modal.error.distance': 'Km ≥ 0 gir',
+  'log.modal.error.note': 'En fazla 280 karakter',
   'settings.title': 'Ayarlar',
   'settings.units': 'Birim',
   'settings.language': 'Dil',
@@ -106,8 +116,13 @@ const EN: Strings = {
   'log.modal.distance': 'Distance (km)',
   'log.modal.rpe': 'RPE (1–10)',
   'log.modal.note': 'Note',
+  'log.modal.notePlaceholder': 'How did it feel? (e.g. windy ridge, tough final climb)',
   'log.modal.save': 'Save',
   'log.modal.cancel': 'Cancel',
+  'log.modal.error.required': 'Required',
+  'log.modal.error.duration': 'Enter minutes > 0',
+  'log.modal.error.distance': 'Enter km ≥ 0',
+  'log.modal.error.note': 'Max 280 chars',
   'settings.title': 'Settings',
   'settings.units': 'Units',
   'settings.language': 'Language',
@@ -144,8 +159,13 @@ const DE: Strings = {
   'log.modal.distance': 'Distanz (km)',
   'log.modal.rpe': 'Anstrengung (1–10)',
   'log.modal.note': 'Notiz',
+  'log.modal.notePlaceholder': 'Wie fühlte es sich an?',
   'log.modal.save': 'Speichern',
   'log.modal.cancel': 'Abbrechen',
+  'log.modal.error.required': 'Pflichtfeld',
+  'log.modal.error.duration': 'Minuten > 0 eingeben',
+  'log.modal.error.distance': 'Km ≥ 0 eingeben',
+  'log.modal.error.note': 'Max 280 Zeichen',
   'settings.title': 'Einstellungen',
   'settings.units': 'Einheiten',
   'settings.language': 'Sprache',
