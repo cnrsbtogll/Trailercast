@@ -15,16 +15,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
       - run: npm ci || npm install
       - run: npx tsc --noEmit
       - run: npx eslint . --max-warnings=0
-      - name: jest
-        run: npx jest --ci --verbose 2>&1 | tee /tmp/jest.log; test ${PIPESTATUS[0]} -eq 0
-      - if: failure()
-        run: |
-          echo "=== JEST FAILURES ==="
-          grep -E "FAIL|●" /tmp/jest.log | head -n 50 || true
-          echo "--- full tail ---"
-          tail -n 100 /tmp/jest.log || true
+      - run: npx jest --ci --runInBand
