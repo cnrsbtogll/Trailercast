@@ -3,9 +3,9 @@ import { Text } from 'react-native';
 import { useSettings } from '@/state/settings';
 import { t } from '@/i18n/strings';
 
-/** Tiny inline icon — no asset bundling required for the scaffold. */
-function TabIcon({ label }: { label: string }) {
-  return <Text style={{ fontSize: 18 }}>{label}</Text>;
+/** Tiny inline icon — no asset bundling required for the scaffold. ponytail: emoji is colored glyph; use opacity for passive state instead of tint. */
+function TabIcon({ label, focused }: { label: string; focused: boolean }) {
+  return <Text style={{ fontSize: 18, opacity: focused ? 1 : 0.42 }}>{label}</Text>;
 }
 
 export default function TabsLayout() {
@@ -14,7 +14,8 @@ export default function TabsLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: '#0F172A',
-        tabBarInactiveTintColor: '#64748B',
+        tabBarInactiveTintColor: '#94A3B8',
+        tabBarStyle: { borderTopColor: '#E2E8F0' },
         headerStyle: { backgroundColor: '#0F172A' },
         headerTintColor: '#F8FAFC',
       }}
@@ -24,7 +25,7 @@ export default function TabsLayout() {
         options={{
           title: t(language, 'today.header'),
           tabBarLabel: t(language, 'today.header'),
-          tabBarIcon: () => <TabIcon label="☀" />,
+          tabBarIcon: ({ focused }) => <TabIcon label="☀" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -32,7 +33,7 @@ export default function TabsLayout() {
         options={{
           title: t(language, 'log.title'),
           tabBarLabel: t(language, 'log.title'),
-          tabBarIcon: () => <TabIcon label="✎" />,
+          tabBarIcon: ({ focused }) => <TabIcon label="✎" focused={focused} />,
         }}
       />
       <Tabs.Screen
@@ -40,7 +41,7 @@ export default function TabsLayout() {
         options={{
           title: t(language, 'settings.title'),
           tabBarLabel: t(language, 'settings.title'),
-          tabBarIcon: () => <TabIcon label="⚙" />,
+          tabBarIcon: ({ focused }) => <TabIcon label="⚙" focused={focused} />,
         }}
       />
     </Tabs>
