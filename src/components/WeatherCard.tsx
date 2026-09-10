@@ -61,12 +61,16 @@ export interface PrecipStripCardProps {
 
 export function PrecipStripCard({ hours, testID = 'today-precip-strip' }: PrecipStripCardProps) {
   const language = useSettings((s) => s.language);
+  // ponytail: 24h geliyor, "önümüzdeki 6 saat" = now'dan itibaren 6
+  const nowHour = new Date().toISOString().slice(0, 13); // YYYY-MM-DDTHH
+  const startIdx = hours.findIndex((h) => h.time.slice(0, 13) >= nowHour);
+  const display = startIdx >= 0 ? hours.slice(startIdx, startIdx + 6) : hours.slice(0, 6);
 
   return (
     <View style={styles.precipCard} testID={testID}>
       <Text style={styles.sectionTitle}>{t(language, 'today.precip.next6h')}</Text>
       <View style={styles.stripRow}>
-        {hours.slice(0, 6).map((h) => {
+        {display.map((h) => {
           const hh = h.time.slice(11, 16); // "HH:MM"
           const mm = h.precipitationMm === null ? '—' : h.precipitationMm.toFixed(1);
           const pct = h.precipitationProbPct === null ? '—' : `${h.precipitationProbPct}%`;
