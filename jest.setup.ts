@@ -45,7 +45,9 @@ jest.mock('expo-sqlite', () => {
 
 // Mock expo-location: no real GPS in tests.
 jest.mock('expo-location', () => ({
-  requestForegroundPermissionsAsync: jest.fn(async () => ({ status: 'granted' })),
+  Accuracy: { Balanced: 3, High: 4, Highest: 5, Low: 1, Lowest: 0 },
+  requestForegroundPermissionsAsync: jest.fn(async () => ({ status: 'granted', granted: true, canAskAgain: true })),
+  getForegroundPermissionsAsync: jest.fn(async () => ({ status: 'granted', granted: true, canAskAgain: true })),
   getCurrentPositionAsync: jest.fn(async () => ({
     coords: { latitude: 39.9334, longitude: 32.8597, accuracy: 10 },
     timestamp: Date.now(),

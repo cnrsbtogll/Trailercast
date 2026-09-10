@@ -45,7 +45,7 @@ export default function TodayScreen() {
           if (isMounted) setLocationStatus('denied');
           throw new Error('permission_denied');
         }
-        const pos = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+        const pos = await Location.getCurrentPositionAsync({ accuracy: ((Location as unknown) as { Accuracy?: { Balanced: number } }).Accuracy?.Balanced ?? 3 });
         lat = pos.coords.latitude;
         lon = pos.coords.longitude;
 
