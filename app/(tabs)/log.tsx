@@ -29,28 +29,31 @@ const TYPE_EMOJI: Record<string, string> = {
 };
 
 function SessionCard({ item, onDelete }: { item: SessionRow; onDelete: (id: number) => void }) {
+  const language = useSettings((s) => s.language);
   const mins = Math.round(item.duration_sec / 60);
   const km = item.distance_m !== null ? (item.distance_m / 1000).toFixed(1) : null;
+  const minShort = t(language, 'common.unit.minShort');
+  const kmUnit = t(language, 'common.unit.km');
   return (
     <View style={styles.card} testID={`session-${item.id}`}>
       <View style={styles.cardTop}>
         <Text style={styles.cardEmoji}>{TYPE_EMOJI[item.activity_type] ?? '◍'}</Text>
         <View style={styles.cardMain}>
-          <Text style={styles.cardType}>{item.activity_type}</Text>
+          <Text style={styles.cardType}>{t(language, `activity.${item.activity_type}` as any)}</Text>
           <Text style={styles.cardMeta}>
-            {mins} min{km ? ` · ${km} km` : ''} {item.rpe !== null ? `· RPE ${item.rpe}` : ''}
+            {mins} {minShort}{km ? ` · ${km} ${kmUnit}` : ''} {item.rpe !== null ? `· RPE ${item.rpe}` : ''}
           </Text>
         </View>
         <Pressable
           onPress={() => onDelete(item.id)}
           testID={`delete-session-${item.id}`}
           style={({ pressed }) => [styles.deleteBtn, pressed && { opacity: 0.7 }]}
-          accessibilityLabel="Delete"
+          accessibilityLabel={t(language, 'log.card.delete')}
         >
           <Text style={styles.deleteText}>✕</Text>
         </Pressable>
       </View>
-      <Text style={styles.cardDate}>{fmtDate(item.started_at, 'en')}</Text>
+      <Text style={styles.cardDate}>{fmtDate(item.started_at, language)}</Text>
       {item.note ? <Text style={styles.cardNote}>{item.note}</Text> : null}
     </View>
   );
@@ -67,7 +70,7 @@ export default function LogScreen() {
       const rows = await getSessions();
       setSessions(rows);
     } catch {
-      Alert.alert('Error', t(language, 'common.error.network'));
+      Alert.alert(t(language, 'common.error.network'));
     } finally {
       setLoading(false);
     }
@@ -111,7 +114,7 @@ export default function LogScreen() {
         <>
           <View style={styles.listHeader}>
             <Text style={styles.listCount}>
-              {sessions.length} {sessions.length === 1 ? 'session' : 'sessions'}
+              {t(language, sessions.length === 1 ? 'log.count_one' : 'log.count_other').replace('{{count}}', String(sessions.length))}
             </Text>
             <Pressable
               onPress={() => setModalOpen(true)}

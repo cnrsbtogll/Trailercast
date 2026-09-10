@@ -36,6 +36,11 @@ export type StringKey =
   | 'log.modal.error.duration'
   | 'log.modal.error.distance'
   | 'log.modal.error.note'
+  | 'log.count_one'
+  | 'log.count_other'
+  | 'log.card.delete'
+  | 'common.unit.minShort'
+  | 'common.unit.km'
   | 'activity.run'
   | 'activity.ride'
   | 'activity.hike'
@@ -85,6 +90,11 @@ const TR: Strings = {
   'log.modal.error.duration': 'Dakika > 0 gir',
   'log.modal.error.distance': 'Km ≥ 0 gir',
   'log.modal.error.note': 'En fazla 280 karakter',
+  'log.count_one': '{{count}} antrenman',
+  'log.count_other': '{{count}} antrenman',
+  'log.card.delete': 'Sil',
+  'common.unit.minShort': 'dk',
+  'common.unit.km': 'km',
   'activity.run': 'Koşu',
   'activity.ride': 'Bisiklet',
   'activity.hike': 'Yürüyüş',
@@ -133,6 +143,11 @@ const EN: Strings = {
   'log.modal.error.duration': 'Enter minutes > 0',
   'log.modal.error.distance': 'Enter km ≥ 0',
   'log.modal.error.note': 'Max 280 chars',
+  'log.count_one': '{{count}} session',
+  'log.count_other': '{{count}} sessions',
+  'log.card.delete': 'Delete',
+  'common.unit.minShort': 'min',
+  'common.unit.km': 'km',
   'activity.run': 'Run',
   'activity.ride': 'Ride',
   'activity.hike': 'Hike',
@@ -181,6 +196,11 @@ const DE: Strings = {
   'log.modal.error.duration': 'Minuten > 0 eingeben',
   'log.modal.error.distance': 'Km ≥ 0 eingeben',
   'log.modal.error.note': 'Max 280 Zeichen',
+  'log.count_one': '{{count}} Einheit',
+  'log.count_other': '{{count}} Einheiten',
+  'log.card.delete': 'Löschen',
+  'common.unit.minShort': 'Min.',
+  'common.unit.km': 'km',
   'activity.run': 'Laufen',
   'activity.ride': 'Radfahren',
   'activity.hike': 'Wandern',
