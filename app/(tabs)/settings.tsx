@@ -1,5 +1,5 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { useSettings, type Units, type Language } from '@/state/settings';
+import { useSettings, type Language } from '@/state/settings';
 import { t } from '@/i18n/strings';
 
 /**
@@ -9,23 +9,9 @@ import { t } from '@/i18n/strings';
  * store. Export, upgrade, privacy link, and about land on Day-2 / Day-3.
  */
 export default function SettingsScreen() {
-  const { units, language, setUnits, setLanguage } = useSettings();
+  const { language, setLanguage } = useSettings();
   return (
     <View style={styles.container} testID="settings-screen">
-      <Section title={t(language, 'settings.units')}>
-        <ToggleRow
-          label={t(language, 'settings.units.metric')}
-          active={units === 'metric'}
-          onPress={() => setUnits('metric' satisfies Units)}
-          testID="units-metric"
-        />
-        <ToggleRow
-          label={t(language, 'settings.units.imperial')}
-          active={units === 'imperial'}
-          onPress={() => setUnits('imperial' satisfies Units)}
-          testID="units-imperial"
-        />
-      </Section>
       <Section title={t(language, 'settings.language')}>
         <ToggleRow
           label="TR"
