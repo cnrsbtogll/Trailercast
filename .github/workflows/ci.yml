@@ -20,5 +20,11 @@ jobs:
       - run: npm ci || npm install
       - run: npx tsc --noEmit
       - run: npx eslint . --max-warnings=0
-      - run: npx jest --ci
-      # ponytail: coverage artifact removed — YAGNI until we actually gate on it; `npx jest --coverage` still works locally
+      - name: jest
+        run: npx jest --ci --verbose 2>&1 | tee /tmp/jest.log; test ${PIPESTATUS[0]} -eq 0
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jest-log
+          path: /tmp/jest.log
+          retention-days: 3
