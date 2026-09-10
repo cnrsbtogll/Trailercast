@@ -18,15 +18,7 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci || npm install
+      - run: ls node_modules/expo-modules-core 2>&1 | head -20; echo "---jest-expo---"; ls node_modules/jest-expo 2>&1 | head -20; echo "---package---"; cat package.json | grep expo-modules-core
       - run: npx tsc --noEmit
       - run: npx eslint . --max-warnings=0
-      - name: jest
-        run: |
-          set +e
-          npx jest --ci --verbose 2>&1 | tee /tmp/jest.log
-          EXIT=${PIPESTATUS[0]}
-          cat /tmp/jest.log
-          if [ $EXIT -ne 0 ]; then
-            echo "::error::jest failed — $(head -n 30 /tmp/jest.log | tr '\n' ';' | cut -c1-800)"
-          fi
-          exit $EXIT
+      - run: npx jest --ci --verbose 2>&1 | tee /tmp/jest.log; test ${PIPESTATUS[0]} -eq 0
