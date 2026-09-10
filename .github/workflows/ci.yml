@@ -20,4 +20,13 @@ jobs:
       - run: npm ci || npm install
       - run: npx tsc --noEmit
       - run: npx eslint . --max-warnings=0
-      - run: npx jest --ci
+      - name: jest
+        run: |
+          set +e
+          npx jest --ci --verbose 2>&1 | tee /tmp/jest.log
+          EXIT=${PIPESTATUS[0]}
+          cat /tmp/jest.log
+          if [ $EXIT -ne 0 ]; then
+            echo "::error::jest failed — $(head -n 30 /tmp/jest.log | tr '\n' ';' | cut -c1-800)"
+          fi
+          exit $EXIT
