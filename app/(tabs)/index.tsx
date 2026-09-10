@@ -3,16 +3,7 @@ import { useSettings } from '@/state/settings';
 import { t } from '@/i18n/strings';
 import { DEMO_FIXTURES } from '@/weather/fixtures';
 import { WeatherCard, PrecipStripCard, MetricsRow } from '@/components/WeatherCard';
-import { fetchWeather, weatherCache } from '@/weather/fetch';
-
-/**
- * Today tab — PRD §3.1 / §4.
- *
- * Day-1 deliverable: skeleton renders on internal TestFlight. Live data
- * wiring is Day-2 morning (slice 3 of the impl plan). For now this
- * renders the screen with the PRD §3.1 anchor fixture (Ankara) so the
- * layout is verifiable in a `jest-expo` snapshot test.
- */
+import { fetchWeather } from '@/weather/fetch';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
 
@@ -20,15 +11,11 @@ import { View } from 'react-native';
  * Today tab — PRD §3.1 / §4.
  *
  * Day-1 deliverable: skeleton renders on internal TestFlight. Live data
- * wiring is Day-2 morning (slice 3 of the impl plan). For now this
- * renders the screen with the PRD §3.1 anchor fixture (Ankara) so the
- * layout is verifiable in a `jest-expo` snapshot test.
+ * wiring is Day-2 morning (slice 3 of the impl plan). Renders with the
+ * PRD §3.1 anchor fixture (Ankara) and attempts live fetch on mount.
  */
 export default function TodayScreen() {
   const language = useSettings((s) => s.language);
-  // DEMO_FIXTURES is a non-empty readonly array by construction; assert
-  // at runtime so we get a clear error if a future tick ever ships an
-  // empty fixture list.
   const fixture = DEMO_FIXTURES[0];
   if (!fixture) {
     throw new Error('TodayScreen: DEMO_FIXTURES is empty');
@@ -47,25 +34,23 @@ export default function TodayScreen() {
       setError(null);
 
       try {
-        // Use the first location from DEMO_FIXTURES for live fetching
         const fixtureLocation = DEMO_FIXTURES[0];
         if (!fixtureLocation) throw new Error('No fixture location available');
-        
-        // Use the location's coordinates from the fixture to fetch live weather
-        const liveData = await fetchWeather(fixtureLocation.current.latitude, fixtureLocation.current.longitude);
-        
-        // Map live API response to fixture shape for component compatibility
+
+        const liveData = await fetchWeather(fixtureLocation.latitude, fixtureLocation.longitude);
+
         const liveFixture = {
-          city: fixture.city,
-          country: fixture.country,
-          latitude: fixture.latitude,
-          longitude: fixture.longitude,
+          city: fixtureLocation.city,
+          country: fixtureLocation.country,
+          latitude: fixtureLocation.latitude,
+          longitude: fixtureLocation.longitude,
+          capturedAt: new Date().toISOString(),
           current: liveData.current,
           precip: liveData.precip,
           cached: liveData.cached,
           fetchedAt: liveData.fetchedAt,
         };
-        
+
         if (isMounted) {
           setWeather(liveFixture);
         }
@@ -81,7 +66,6 @@ export default function TodayScreen() {
       }
     }
 
-    // Attempt live fetch on mount; fall back to fixture on error
     loadLiveWeather();
 
     return () => {
@@ -101,7 +85,7 @@ export default function TodayScreen() {
       {loading && (
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#0F172A" />
-          <Text style={styles.loadingText}>{t(language, 'today.loading')}</Text>
+          <Text style={styles.loadingText}>{t(language, 'common.loading')}</Text>
         </View>
       )}
 
@@ -128,4 +112,9 @@ const styles = StyleSheet.create({
   content: { padding: 16, gap: 12 },
   title: { fontSize: 28, fontWeight: '700', color: '#0F172A' },
   subtitle: { fontSize: 14, color: '#64748B', marginTop: -8, marginBottom: 4 },
+  loadingContainer: { alignItems: 'center', justifyContent: 'center', padding: 24, gap: 12 },
+  loadingText: { fontSize: 14, color: '#64748B', textAlign: 'center' },
+  errorContainer: { backgroundColor: '#FEF2F2', borderRadius: 12, padding: 12, gap: 4, borderWidth: 1, borderColor: '#FECACA' },
+  errorText: { fontSize: 13, color: '#DC2626', fontWeight: '600' },
+  fallbackText: { fontSize: 12, color: '#991B1B' },
 });

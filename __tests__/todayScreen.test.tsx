@@ -5,13 +5,38 @@ import TodayScreen from '../app/(tabs)/index';
 describe('TodayScreen', () => {
   beforeEach(() => {
     useSettings.getState().reset();
+    jest.spyOn(require('@/weather/fetch'), 'fetchWeather').mockResolvedValue({
+      current: {
+        temperatureC: 23.4,
+        feelsLikeC: 22.1,
+        humidityPct: 48,
+        precipitationMm: 0.0,
+        windKmh: 14.2,
+        gustKmh: 22.5,
+        cloudCoverPct: 55,
+        weatherCode: 2,
+        time: '2026-09-12T12:00',
+      },
+      precip: {
+        hours: [
+          { time: '2026-09-12T12:00', precipitationMm: 0.0, precipitationProbPct: 5, weatherCode: 2 },
+        ],
+      },
+      cached: false,
+      fetchedAt: new Date().toISOString(),
+    });
   });
 
-  it('renders the screen scaffold with TR defaults', () => {
-    const { getByTestId, getByText } = render(<TodayScreen />);
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  it('renders the screen scaffold with TR defaults', async () => {
+    const { getByTestId, getByText, findByTestId } = render(<TodayScreen />);
     expect(getByTestId('today-screen')).toBeTruthy();
-    expect(getByTestId('today-hero')).toBeTruthy();
-    expect(getByTestId('today-precip-strip')).toBeTruthy();
+    // wait for live fetch to resolve and cards to appear
+    expect(await findByTestId('today-hero')).toBeTruthy();
+    expect(await findByTestId('today-precip-strip')).toBeTruthy();
     expect(getByText('Bugün')).toBeTruthy(); // TR: today.header
   });
 

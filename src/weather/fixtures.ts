@@ -69,6 +69,9 @@ export const ANKARA_FIXTURE: TodayFixture = {
 /** Berlin fixture — colder, breezier, less cloud. */
 export const BERLIN_FIXTURE: TodayFixture = {
   city: 'Berlin',
+  country: 'DE',
+  latitude: 52.52,
+  longitude: 13.405,
   capturedAt: '2026-09-12T12:00:00Z',
   current: {
     temperatureC: 14.8,
@@ -91,6 +94,8 @@ export const BERLIN_FIXTURE: TodayFixture = {
       { time: '2026-09-12T17:00', precipitationMm: 0.1, precipitationProbPct: 22, weatherCode: 3 },
     ],
   },
+  cached: false,
+  fetchedAt: new Date().toISOString(),
 };
 
 /**

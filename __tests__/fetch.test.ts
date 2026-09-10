@@ -45,7 +45,7 @@ describe('fetchWeather', () => {
     expect(data.current.temperatureC).toBe(18.5);
     expect(data.current.feelsLikeC).toBe(17.8);
     expect(data.precip.hours).toHaveLength(2);
-    expect(data.precip.hours[1].precipitationProbPct).toBe(40);
+    expect(data.precip.hours[1]!.precipitationProbPct).toBe(40);
   });
 
   it('serves subsequent requests from cache within TTL', async () => {
