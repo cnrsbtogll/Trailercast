@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
 import { useSettings } from '@/state/settings';
 import { t } from '@/i18n/strings';
 
@@ -12,8 +12,16 @@ export default function LogScreen() {
   const language = useSettings((s) => s.language);
   return (
     <View style={styles.container} testID="log-screen">
-      <Text style={styles.empty}>{t(language, 'log.empty')}</Text>
-      <Text style={styles.cta}>{t(language, 'log.newCta')}</Text>
+      <View style={styles.emptyWrap}>
+        <Text style={styles.empty}>{t(language, 'log.empty')}</Text>
+        <Pressable
+          style={({ pressed }) => [styles.cta, pressed && styles.ctaPressed]}
+          onPress={() => Alert.alert(t(language, 'log.newCta'), 'Yakında — antrenman formu slice 4 ile geliyor')}
+          testID="log-new-cta"
+        >
+          <Text style={styles.ctaText}>{t(language, 'log.newCta')}</Text>
+        </Pressable>
+      </View>
     </View>
   );
 }
@@ -23,8 +31,23 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#F8FAFC',
     padding: 16,
-    gap: 12,
   },
-  empty: { fontSize: 16, color: '#64748B', marginTop: 24, textAlign: 'center' },
-  cta: { fontSize: 16, color: '#0F172A', fontWeight: '600', textAlign: 'center' },
+  emptyWrap: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 16,
+    paddingBottom: 48,
+  },
+  empty: { fontSize: 15, color: '#64748B', textAlign: 'center', lineHeight: 22 },
+  cta: {
+    backgroundColor: '#0F172A',
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+    borderRadius: 12,
+    minWidth: 180,
+    alignItems: 'center',
+  },
+  ctaPressed: { opacity: 0.88 },
+  ctaText: { fontSize: 15, color: '#F8FAFC', fontWeight: '700', textAlign: 'center' },
 });
