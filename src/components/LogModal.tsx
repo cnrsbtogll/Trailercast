@@ -143,7 +143,7 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
                       ]}
                     >
                       <Text style={[styles.chipEmoji]}>{ACTIVITY_EMOJI[a]}</Text>
-                      <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{a}</Text>
+                      <Text style={[styles.chipText, selected && styles.chipTextSelected]}>{t(language, `activity.${a}` as any)}</Text>
                     </Pressable>
                   );
                 })}

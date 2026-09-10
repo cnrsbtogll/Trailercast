@@ -36,6 +36,11 @@ export type StringKey =
   | 'log.modal.error.duration'
   | 'log.modal.error.distance'
   | 'log.modal.error.note'
+  | 'activity.run'
+  | 'activity.ride'
+  | 'activity.hike'
+  | 'activity.walk'
+  | 'activity.other'
   | 'settings.title'
   | 'settings.units'
   | 'settings.language'
@@ -80,6 +85,11 @@ const TR: Strings = {
   'log.modal.error.duration': 'Dakika > 0 gir',
   'log.modal.error.distance': 'Km ≥ 0 gir',
   'log.modal.error.note': 'En fazla 280 karakter',
+  'activity.run': 'Koşu',
+  'activity.ride': 'Bisiklet',
+  'activity.hike': 'Yürüyüş',
+  'activity.walk': 'Doğa Yürüyüşü',
+  'activity.other': 'Diğer',
   'settings.title': 'Ayarlar',
   'settings.units': 'Birim',
   'settings.language': 'Dil',
@@ -123,6 +133,11 @@ const EN: Strings = {
   'log.modal.error.duration': 'Enter minutes > 0',
   'log.modal.error.distance': 'Enter km ≥ 0',
   'log.modal.error.note': 'Max 280 chars',
+  'activity.run': 'Run',
+  'activity.ride': 'Ride',
+  'activity.hike': 'Hike',
+  'activity.walk': 'Walk',
+  'activity.other': 'Other',
   'settings.title': 'Settings',
   'settings.units': 'Units',
   'settings.language': 'Language',
@@ -166,6 +181,11 @@ const DE: Strings = {
   'log.modal.error.duration': 'Minuten > 0 eingeben',
   'log.modal.error.distance': 'Km ≥ 0 eingeben',
   'log.modal.error.note': 'Max 280 Zeichen',
+  'activity.run': 'Laufen',
+  'activity.ride': 'Radfahren',
+  'activity.hike': 'Wandern',
+  'activity.walk': 'Spazieren',
+  'activity.other': 'Sonstiges',
   'settings.title': 'Einstellungen',
   'settings.units': 'Einheiten',
   'settings.language': 'Sprache',
