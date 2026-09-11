@@ -10,6 +10,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.trailcast.ios",
+      "buildNumber": "2",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "TrailCast uses your location only when the app is open, to fetch weather for your current spot. We never store it or send it to a server.",
         "ITSAppUsesNonExemptEncryption": false
@@ -17,9 +18,8 @@
     },
     "android": {
       "package": "app.trailcast.android",
+      "versionCode": 2,
       "permissions": [
-        "android.permission.ACCESS_FINE_LOCATION",
-        "android.permission.ACCESS_COARSE_LOCATION",
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.ACCESS_COARSE_LOCATION"
       ]
