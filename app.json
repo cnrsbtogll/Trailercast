@@ -35,6 +35,13 @@
       "typedRoutes": true,
       "tsconfigPaths": true
     },
-    "assets": []
+    "assets": [],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "4474c02a-45db-47d7-886c-4c51b6cd408f"
+      }
+    },
+    "owner": "cnrsbtogll"
   }
 }

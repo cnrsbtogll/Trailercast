@@ -1,6 +1,6 @@
 {
   "cli": {
-    "version": ">= 15.0.0",
+    "version": ">= 24.3.0",
     "appVersionSource": "remote"
   },
   "build": {
@@ -18,15 +18,13 @@
       "android": { "buildType": "apk" }
     },
     "production": {
-      "distribution": "internal",
+      "distribution": "store",
       "channel": "production",
-      "ios": { "simulator": false },
-      "android": { "buildType": "aab" }
+      "android": { "buildType": "app-bundle" }
     }
   },
   "submit": {
     "production": {
-      "ios": { "ascAppId": null },
       "android": { "track": "internal" }
     }
   }
