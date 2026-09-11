@@ -19,6 +19,8 @@
       "package": "app.trailcast.android",
       "permissions": [
         "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.ACCESS_COARSE_LOCATION"
       ]
     },
@@ -42,6 +44,12 @@
         "projectId": "4474c02a-45db-47d7-886c-4c51b6cd408f"
       }
     },
-    "owner": "cnrsbtogll"
+    "owner": "cnrsbtogll",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/4474c02a-45db-47d7-886c-4c51b6cd408f"
+    }
   }
 }
