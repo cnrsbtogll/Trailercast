@@ -6,7 +6,6 @@
     "orientation": "portrait",
     "scheme": "trailcast",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.trailcast.ios",
@@ -31,13 +30,14 @@
         {
           "locationAlwaysAndWhenInUsePermission": "TrailCast uses your location only when the app is open, to fetch weather for your current spot. We never store it or send it to a server."
         }
-      ]
+      ],
+      "expo-asset",
+      "expo-sharing"
     ],
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true
     },
-    "assets": [],
     "extra": {
       "router": {},
       "eas": {
