@@ -80,6 +80,13 @@ export const SCHEMA_SQL: readonly string[] = [
      version   INTEGER PRIMARY KEY,
      applied_at TEXT    NOT NULL
    );`,
+
+  // app_settings — key/value blob for UI prefs (language, units, pro flag).
+  // ponytail: single K/V table beats a columns-per-pref schema; 3 rows max.
+  `CREATE TABLE IF NOT EXISTS app_settings (
+     key   TEXT PRIMARY KEY,
+     value TEXT NOT NULL
+   );`,
 ];
 
 // v1 → v2 adhoc location columns for existing DBs (CREATE TABLE above covers fresh installs)

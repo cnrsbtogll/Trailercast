@@ -1,17 +1,31 @@
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { useSettings, type Language } from '@/state/settings';
+import { useSettings, type Language, type Units } from '@/state/settings';
 import { t } from '@/i18n/strings';
 
 /**
  * Settings tab — PRD §3.1.
  *
- * Day-1 deliverable: units + language toggles wired to the Zustand
- * store. Export, upgrade, privacy link, and about land on Day-2 / Day-3.
+ * Day-1 deliverable: units + language toggles wired to the Zustand store.
+ * Export, upgrade, privacy link, and about land on Day-2 / Day-3.
  */
 export default function SettingsScreen() {
-  const { language, setLanguage } = useSettings();
+  const { language, setLanguage, units, setUnits } = useSettings();
   return (
     <View style={styles.container} testID="settings-screen">
+      <Section title={t(language, 'settings.units')}>
+        <ToggleRow
+          label={t(language, 'settings.units.metric')}
+          active={units === 'metric'}
+          onPress={() => setUnits('metric' satisfies Units)}
+          testID="units-metric"
+        />
+        <ToggleRow
+          label={t(language, 'settings.units.imperial')}
+          active={units === 'imperial'}
+          onPress={() => setUnits('imperial' satisfies Units)}
+          testID="units-imperial"
+        />
+      </Section>
       <Section title={t(language, 'settings.language')}>
         <ToggleRow
           label="TR"

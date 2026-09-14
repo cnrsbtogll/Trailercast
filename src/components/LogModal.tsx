@@ -19,6 +19,8 @@ import { useSettings } from '@/state/settings';
 import { t, type StringKey } from '@/i18n/strings';
 import type { ActivityType } from '@/db/schema';
 import { insertSession } from '@/db/sessions';
+import { insertWeatherSnapshot } from '@/db/snapshots';
+import { fetchWeather } from '@/weather/fetch';
 import * as Location from 'expo-location';
 
 const ACTIVITIES: readonly ActivityType[] = ['run', 'ride', 'hike', 'walk', 'other'] as const;
@@ -113,6 +115,22 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
         // ignore location capture error
       }
 
+      // ponytail: best-effort weather snapshot — fetch fails silently, session still saves
+      let snapshot_id: number | null = null;
+      if (session_lat !== null && session_lon !== null) {
+        try {
+          const live = await fetchWeather(session_lat, session_lon);
+          snapshot_id = await insertWeatherSnapshot({
+            location_id: null,
+            current: live.current,
+            precip: live.precip,
+            captured_at: new Date().toISOString(),
+          });
+        } catch {
+          // weather unavailable — save session without snapshot
+        }
+      }
+
       await insertSession({
         activity_type: activity,
         duration_sec: Math.round(durMin * 60),
@@ -123,6 +141,7 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
         session_city,
         session_lat,
         session_lon,
+        weather_snapshot_id: snapshot_id,
       });
       reset();
       onSaved();

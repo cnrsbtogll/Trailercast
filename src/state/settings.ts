@@ -15,6 +15,7 @@
  * store never reports its values anywhere.
  */
 import { create } from 'zustand';
+import { loadSettings, saveSetting } from '@/db/settingsRepo';
 
 export type Units = 'metric' | 'imperial';
 export type Language = 'tr' | 'en' | 'de';
@@ -34,11 +35,46 @@ export const useSettings = create<SettingsState>((set) => ({
   units: 'metric',
   language: 'tr',
   pro_unlocked: false,
-  setUnits: (u) => set({ units: u }),
-  setLanguage: (l) => set({ language: l }),
-  setProUnlocked: (v) => set({ pro_unlocked: v }),
+  setUnits: (u) => {
+    set({ units: u });
+    void saveSetting('units', u);
+  },
+  setLanguage: (l) => {
+    set({ language: l });
+    void saveSetting('language', l);
+  },
+  setProUnlocked: (v) => {
+    set({ pro_unlocked: v });
+    void saveSetting('pro_unlocked', String(v));
+  },
   reset: () => set({ units: 'metric', language: 'tr', pro_unlocked: false }),
 }));
+
+/**
+ * Boot-time hydration: load persisted prefs from SQLite and apply them.
+ * Called once from the root layout before the first tab render, so the
+ * UI never flashes the wrong locale.
+ */
+export async function hydrateFromDB(): Promise<void> {
+  try {
+    const snap = await loadSettings();
+    const patch: Partial<SettingsState> = {};
+    if (snap.language === 'tr' || snap.language === 'en' || snap.language === 'de') {
+      patch.language = snap.language;
+    }
+    if (snap.units === 'metric' || snap.units === 'imperial') {
+      patch.units = snap.units;
+    }
+    if (snap.pro_unlocked === 'true') {
+      patch.pro_unlocked = true;
+    }
+    if (Object.keys(patch).length > 0) {
+      useSettings.setState(patch);
+    }
+  } catch (e) {
+    console.warn('Settings hydration failed, using defaults:', e);
+  }
+}
 
 /** Helper: format a temperature in the user's preferred units. */
 export function formatTemp(c: number | null, units: Units): string {
