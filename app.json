@@ -6,6 +6,7 @@
     "orientation": "portrait",
     "scheme": "trailcast",
     "userInterfaceStyle": "automatic",
+    "icon": "./assets/icon.png",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.trailcast.ios",
@@ -19,6 +20,10 @@
       "package": "app.trailcast.android",
       "versionCode": 2,
       "softwareKeyboardLayoutMode": "resize",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0F172A"
+      },
       "permissions": [
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.ACCESS_COARSE_LOCATION"
