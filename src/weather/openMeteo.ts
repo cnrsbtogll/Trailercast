@@ -23,6 +23,7 @@ export interface ForecastRequest {
   longitude: number;
   hourly?: readonly string[];
   current?: readonly string[];
+  daily?: readonly string[];
   timezone?: string; // 'auto' | 'UTC' | IANA tz
   forecast_days?: 1 | 2 | 3 | 5 | 7;
 }
@@ -47,10 +48,14 @@ export function buildForecastUrl(req: ForecastRequest): string {
   );
   params.set(
     'hourly',
-    (req.hourly ?? ['precipitation', 'precipitation_probability', 'weather_code']).join(','),
+    (req.hourly ?? ['precipitation', 'precipitation_probability', 'weather_code', 'temperature_2m', 'wind_speed_10m']).join(','),
+  );
+  params.set(
+    'daily',
+    (req.daily ?? ['weather_code', 'temperature_2m_max', 'temperature_2m_min', 'precipitation_probability_max', 'wind_speed_10m_max']).join(','),
   );
   params.set('timezone', req.timezone ?? 'auto');
-  params.set('forecast_days', String(req.forecast_days ?? 1));
+  params.set('forecast_days', String(req.forecast_days ?? 7));
   params.set('wind_speed_unit', 'kmh');
   return `${FORECAST_BASE}?${params.toString()}`;
 }
@@ -144,6 +149,17 @@ export interface ParsedForecast {
   }>;
 }
 
+export interface ParsedDaily {
+  days: ReadonlyArray<{
+    date: string; // YYYY-MM-DD
+    weatherCode: number | null;
+    tempMaxC: number | null;
+    tempMinC: number | null;
+    precipProbMaxPct: number | null;
+    windMaxKmh: number | null;
+  }>;
+}
+
 export function parseCurrent(payload: unknown): ParsedCurrent {
   if (!isObject(payload)) return emptyCurrent();
   const current = payload['current'];
@@ -184,6 +200,30 @@ export function parseHourlyPrecip(payload: unknown): ParsedForecast {
     });
   }
   return { hours: out };
+}
+
+export function parseDaily(payload: unknown): ParsedDaily {
+  if (!isObject(payload)) return { days: [] };
+  const daily = payload['daily'];
+  if (!isObject(daily)) return { days: [] };
+  const dates = arrOfStrings(daily['time']);
+  const codes = arrOfNumsOrNull(daily['weather_code']);
+  const maxes = arrOfNumsOrNull(daily['temperature_2m_max']);
+  const mins = arrOfNumsOrNull(daily['temperature_2m_min']);
+  const probs = arrOfNumsOrNull(daily['precipitation_probability_max']);
+  const winds = arrOfNumsOrNull(daily['wind_speed_10m_max']);
+  const days = [];
+  for (let i = 0; i < dates.length; i++) {
+    days.push({
+      date: dates[i] ?? '',
+      weatherCode: codes[i] ?? null,
+      tempMaxC: maxes[i] ?? null,
+      tempMinC: mins[i] ?? null,
+      precipProbMaxPct: probs[i] ?? null,
+      windMaxKmh: winds[i] ?? null,
+    });
+  }
+  return { days };
 }
 
 // ---- internals ----

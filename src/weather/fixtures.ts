@@ -1,105 +1,114 @@
 /**
- * TrailCast — fixture weather data for Day-1 / slice 2.
+ * TrailCast — demo fixture data for offline/dev mode.
  *
- * The PRD calls for a hardcoded fixture ("Ankara, 2026-09-12 12:00 UTC")
- * on the Today-tab skeleton so the screen can be verified before any
- * network call exists. This module exports the typed fixture shape the
- * Today tab renders when the real Open-Meteo client (slice 3) is not
- * yet wired.
- *
- * Two flags here:
- *  - shape matches `parseCurrent` + `parseHourlyPrecip` output so the
- *    Today tab renders the same component in fixture-mode and live-mode.
- *  - no network, no clock-dependence — values are deterministic.
+ * ponytail: typed fixture matching WeatherData shape. Used when live fetch
+ * fails or GPS is denied. Minimal — just enough to render the Today tab.
  */
-import type {
-  ParsedCurrent as CurrentWeather,
-  ParsedForecast as HourlyPrecipitation,
-} from '@/weather/openMeteo';
-
-export interface TodayFixture {
-  readonly city: string;
-  readonly country: string;
-  readonly latitude: number;
-  readonly longitude: number;
-  readonly capturedAt: string; // ISO timestamp the fixture pretends to be from
-  readonly current: CurrentWeather;
-  readonly precip: HourlyPrecipitation;
-  readonly cached: boolean;
-  readonly fetchedAt: string;
+export interface FixtureCurrent {
+  temperatureC: number | null;
+  feelsLikeC: number | null;
+  humidityPct: number | null;
+  precipitationMm: number | null;
+  windKmh: number | null;
+  gustKmh: number | null;
+  cloudCoverPct: number | null;
+  weatherCode: number | null;
+  time: string | null;
 }
 
-/**
- * Anchor fixture — Ankara, 2026-09-12 12:00 UTC. Values chosen to read
- * plausibly as a "warm, partly cloudy, light afternoon shower rolling in"
- * pattern that exercises every UI field (temp, feels, humidity, wind,
- * gust, cloud cover, precip probability, precip mm).
- */
-export const ANKARA_FIXTURE: TodayFixture = {
+export interface FixtureData {
+  city: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+  capturedAt: string;
+  current: FixtureCurrent;
+  precip: {
+    hours: ReadonlyArray<{
+      time: string;
+      precipitationMm: number | null;
+      precipitationProbPct: number | null;
+      weatherCode: number | null;
+    }>;
+  };
+  daily: {
+    days: ReadonlyArray<{
+      date: string;
+      weatherCode: number | null;
+      tempMaxC: number | null;
+      tempMinC: number | null;
+      precipProbMaxPct: number | null;
+      windMaxKmh: number | null;
+    }>;
+  };
+  cached: boolean;
+  fetchedAt: string;
+}
+
+/** Ankara fixture (used by the Today tab offline fallback + tests). */
+export const ANKARA_FIXTURE: FixtureData = {
   city: 'Ankara',
-  country: 'TR',
-  latitude: 39.9334,
-  longitude: 32.8597,
+  country: 'Turkey',
+  latitude: 39.9255,
+  longitude: 32.8662,
   capturedAt: '2026-09-12T12:00:00Z',
   current: {
     temperatureC: 23.4,
-    feelsLikeC: 22.1,
-    humidityPct: 48,
-    precipitationMm: 0.0,
-    windKmh: 14.2,
-    gustKmh: 22.5,
-    cloudCoverPct: 55,
-    weatherCode: 2, // Partly cloudy
-    time: '2026-09-12T12:00',
+    feelsLikeC: 24,
+    humidityPct: 42,
+    precipitationMm: 0,
+    windKmh: 9,
+    gustKmh: 14,
+    cloudCoverPct: 30,
+    weatherCode: 2,
+    time: '2026-09-12T12:00:00Z',
   },
   precip: {
     hours: [
-      { time: '2026-09-12T12:00', precipitationMm: 0.0, precipitationProbPct: 5,  weatherCode: 2 },
-      { time: '2026-09-12T13:00', precipitationMm: 0.0, precipitationProbPct: 12, weatherCode: 2 },
-      { time: '2026-09-12T14:00', precipitationMm: 0.4, precipitationProbPct: 35, weatherCode: 61 },
-      { time: '2026-09-12T15:00', precipitationMm: 1.2, precipitationProbPct: 65, weatherCode: 63 },
-      { time: '2026-09-12T16:00', precipitationMm: 0.8, precipitationProbPct: 55, weatherCode: 61 },
-      { time: '2026-09-12T17:00', precipitationMm: 0.2, precipitationProbPct: 25, weatherCode: 2 },
+      { time: '2026-09-12T12:00', precipitationMm: 0, precipitationProbPct: 10, weatherCode: 2 },
+      { time: '2026-09-12T13:00', precipitationMm: 0, precipitationProbPct: 10, weatherCode: 2 },
+      { time: '2026-09-12T14:00', precipitationMm: 0, precipitationProbPct: 12, weatherCode: 2 },
+      { time: '2026-09-12T15:00', precipitationMm: 0, precipitationProbPct: 15, weatherCode: 2 },
+      { time: '2026-09-12T16:00', precipitationMm: 0.3, precipitationProbPct: 45, weatherCode: 61 },
+      { time: '2026-09-12T17:00', precipitationMm: 0, precipitationProbPct: 5, weatherCode: 2 },
     ],
   },
+  daily: { days: [] },
   cached: false,
-  fetchedAt: new Date().toISOString(),
+  fetchedAt: '2026-09-12T12:05:00Z',
 };
 
-/** Berlin fixture — colder, breezier, less cloud. */
-export const BERLIN_FIXTURE: TodayFixture = {
+/** Berlin fixture: colder + breezier than Ankara (test contrast). */
+export const BERLIN_FIXTURE: FixtureData = {
   city: 'Berlin',
-  country: 'DE',
+  country: 'Germany',
   latitude: 52.52,
   longitude: 13.405,
   capturedAt: '2026-09-12T12:00:00Z',
   current: {
-    temperatureC: 14.8,
-    feelsLikeC: 12.9,
-    humidityPct: 71,
-    precipitationMm: 0.0,
-    windKmh: 18.4,
-    gustKmh: 27.0,
-    cloudCoverPct: 78,
-    weatherCode: 3, // Overcast
-    time: '2026-09-12T12:00',
+    temperatureC: 16.1,
+    feelsLikeC: 15,
+    humidityPct: 65,
+    precipitationMm: 0.4,
+    windKmh: 22,
+    gustKmh: 31,
+    cloudCoverPct: 80,
+    weatherCode: 61,
+    time: '2026-09-12T12:00:00Z',
   },
   precip: {
     hours: [
-      { time: '2026-09-12T12:00', precipitationMm: 0.0, precipitationProbPct: 18, weatherCode: 3 },
-      { time: '2026-09-12T13:00', precipitationMm: 0.2, precipitationProbPct: 32, weatherCode: 61 },
-      { time: '2026-09-12T14:00', precipitationMm: 0.6, precipitationProbPct: 48, weatherCode: 61 },
-      { time: '2026-09-12T15:00', precipitationMm: 0.9, precipitationProbPct: 60, weatherCode: 63 },
-      { time: '2026-09-12T16:00', precipitationMm: 0.5, precipitationProbPct: 45, weatherCode: 61 },
-      { time: '2026-09-12T17:00', precipitationMm: 0.1, precipitationProbPct: 22, weatherCode: 3 },
+      { time: '2026-09-12T12:00', precipitationMm: 0.4, precipitationProbPct: 70, weatherCode: 61 },
+      { time: '2026-09-12T13:00', precipitationMm: 0.2, precipitationProbPct: 60, weatherCode: 61 },
+      { time: '2026-09-12T14:00', precipitationMm: 0, precipitationProbPct: 45, weatherCode: 61 },
+      { time: '2026-09-12T15:00', precipitationMm: 0, precipitationProbPct: 30, weatherCode: 3 },
+      { time: '2026-09-12T16:00', precipitationMm: 0, precipitationProbPct: 15, weatherCode: 3 },
+      { time: '2026-09-12T17:00', precipitationMm: 0, precipitationProbPct: 5, weatherCode: 2 },
     ],
   },
+  daily: { days: [] },
   cached: false,
-  fetchedAt: new Date().toISOString(),
+  fetchedAt: '2026-09-12T12:05:00Z',
 };
 
-/**
- * Demo fixtures used by the Day-1 / slice-2 Today tab. Live data
- * replaces this in slice 3 once the Open-Meteo client lands.
- */
-export const DEMO_FIXTURES: readonly TodayFixture[] = [ANKARA_FIXTURE];
+export const DEMO_FIXTURES: FixtureData[] = [ANKARA_FIXTURE];

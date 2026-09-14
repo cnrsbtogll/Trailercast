@@ -4,6 +4,7 @@ import { useSettings } from '@/state/settings';
 import { t, type StringKey } from '@/i18n/strings';
 import { LogModal } from '@/components/LogModal';
 import { SessionDetailModal } from '@/components/SessionDetailModal';
+import { WeeklyStats } from '@/components/WeeklyStats';
 import { getSessions, deleteSession } from '@/db/sessions';
 import type { SessionRow } from '@/db/schema';
 
@@ -124,6 +125,7 @@ export default function LogScreen() {
         </View>
       ) : (
         <>
+          <WeeklyStats sessions={sessions} />
           <View style={styles.listHeader}>
             <Text style={styles.listCount}>
               {t(language, sessions.length === 1 ? 'log.count_one' : 'log.count_other').replace('{{count}}', String(sessions.length))}

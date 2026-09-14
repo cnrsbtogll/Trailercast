@@ -14,7 +14,7 @@ describe('WeatherCard (slice 2)', () => {
     expect(getByTestId('today-hero')).toBeTruthy();
     expect(getByText('23°')).toBeTruthy();
     expect(getByText('Partly cloudy')).toBeTruthy();
-    expect(getByText(/22°/)).toBeTruthy();
+    expect(getByText(/24°/)).toBeTruthy();
   });
 
   it('falls back to em-dashes when fields are null', () => {
@@ -48,8 +48,8 @@ describe('WeatherCard (slice 2)', () => {
 
   it('MetricsRow renders wind / humidity / cloud with values', () => {
     const { getByText } = render(<MetricsRow current={ANKARA_FIXTURE.current} />);
-    expect(getByText('14 km/h')).toBeTruthy();
-    expect(getByText('48%')).toBeTruthy();
-    expect(getByText('55%')).toBeTruthy();
+    expect(getByText('9 km/h')).toBeTruthy();
+    expect(getByText('42%')).toBeTruthy();
+    expect(getByText('30%')).toBeTruthy();
   });
 });

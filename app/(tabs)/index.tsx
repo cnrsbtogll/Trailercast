@@ -3,6 +3,7 @@ import { useSettings } from '@/state/settings';
 import { t } from '@/i18n/strings';
 import { DEMO_FIXTURES } from '@/weather/fixtures';
 import { WeatherCard, PrecipStripCard, MetricsRow } from '@/components/WeatherCard';
+import { BestHoursCard, WeeklyForecastCard } from '@/components/WeatherCards';
 import { fetchWeather } from '@/weather/fetch';
 import { useEffect, useState } from 'react';
 import { View } from 'react-native';
@@ -84,6 +85,7 @@ export default function TodayScreen() {
           capturedAt: new Date().toISOString(),
           current: liveData.current,
           precip: liveData.precip,
+          daily: liveData.daily,
           cached: liveData.cached,
           fetchedAt: liveData.fetchedAt,
         };
@@ -136,8 +138,10 @@ export default function TodayScreen() {
       {!loading && weather && (
         <>
           <WeatherCard current={weather.current} />
+          <BestHoursCard forecast={weather.precip} />
           <PrecipStripCard hours={weather.precip.hours} />
           <MetricsRow current={weather.current} />
+          <WeeklyForecastCard daily={weather.daily} />
         </>
       )}
     </ScrollView>

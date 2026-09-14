@@ -70,7 +70,15 @@ export type StringKey =
   | 'common.cancel'
   | 'common.save'
   | 'common.loading'
-  | 'common.error.network';
+  | 'common.error.network'
+  | 'today.bestHours'
+  | 'today.bestHours.hint'
+  | 'today.weekly'
+  | 'today.weekly.days'
+  | 'log.weekly.title'
+  | 'log.weekly.distance'
+  | 'log.weekly.duration'
+  | 'log.weekly.count';
 
 type Strings = Record<StringKey, string>;
 
@@ -136,6 +144,14 @@ const TR: Strings = {
   'common.save': 'Kaydet',
   'common.loading': 'Yükleniyor…',
   'common.error.network': 'Ağ hatası. Tekrar dene.',
+  'today.bestHours': 'En iyi koşu saatleri',
+  'today.bestHours.hint': 'Yağış × rüzgar × sıcaklık skoru',
+  'today.weekly': 'Haftalık tahmin',
+  'today.weekly.days': 'Günler',
+  'log.weekly.title': 'Bu hafta',
+  'log.weekly.distance': 'Mesafe',
+  'log.weekly.duration': 'Süre',
+  'log.weekly.count': 'Antrenman',
 };
 
 const EN: Strings = {
@@ -200,6 +216,14 @@ const EN: Strings = {
   'common.save': 'Save',
   'common.loading': 'Loading…',
   'common.error.network': 'Network error. Try again.',
+  'today.bestHours': 'Best hours to run',
+  'today.bestHours.hint': 'Rain × wind × heat score',
+  'today.weekly': '7-day forecast',
+  'today.weekly.days': 'Days',
+  'log.weekly.title': 'This week',
+  'log.weekly.distance': 'Distance',
+  'log.weekly.duration': 'Duration',
+  'log.weekly.count': 'Sessions',
 };
 
 const DE: Strings = {
@@ -264,6 +288,14 @@ const DE: Strings = {
   'common.save': 'Speichern',
   'common.loading': 'Lädt…',
   'common.error.network': 'Netzwerkfehler. Erneut versuchen.',
+  'today.bestHours': 'Beste Laufzeiten',
+  'today.bestHours.hint': 'Regen × Wind × Hitze-Score',
+  'today.weekly': '7-Tage-Vorhersage',
+  'today.weekly.days': 'Tage',
+  'log.weekly.title': 'Diese Woche',
+  'log.weekly.distance': 'Distanz',
+  'log.weekly.duration': 'Dauer',
+  'log.weekly.count': 'Einheiten',
 };
 
 export const STRINGS: Record<'tr' | 'en' | 'de', Strings> = {

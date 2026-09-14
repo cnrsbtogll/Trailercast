@@ -22,6 +22,11 @@ describe('TodayScreen', () => {
           { time: '2026-09-12T12:00', precipitationMm: 0.0, precipitationProbPct: 5, weatherCode: 2 },
         ],
       },
+      daily: {
+        days: [
+          { date: '2026-09-12', weatherCode: 2, tempMaxC: 25, tempMinC: 16, precipProbMaxPct: 10, windMaxKmh: 12 },
+        ],
+      },
       cached: false,
       fetchedAt: new Date().toISOString(),
     });

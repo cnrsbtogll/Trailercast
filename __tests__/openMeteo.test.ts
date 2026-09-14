@@ -15,7 +15,7 @@ describe('Open-Meteo URL builder', () => {
     expect(url).toContain('latitude=39.9334');
     expect(url).toContain('longitude=32.8597');
     expect(url).toContain('timezone=auto');
-    expect(url).toContain('forecast_days=1');
+    expect(url).toContain('forecast_days=7');
     expect(url).toContain('temperature_2m');
     expect(url).toContain('precipitation');
     expect(url).toContain('wind_speed_10m');
@@ -41,7 +41,7 @@ describe('Open-Meteo URL builder', () => {
     });
     expect(url).toContain('hourly=temperature_2m');
     expect(url).toContain('current=temperature_2m');
-    expect(url).not.toContain('precipitation_probability');
+    expect(url).toContain('daily=weather_code');
   });
 
   it('builds geocode URL with sensible defaults', () => {

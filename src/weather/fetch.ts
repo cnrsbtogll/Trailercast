@@ -2,14 +2,17 @@ import {
   buildForecastUrl,
   parseCurrent,
   parseHourlyPrecip,
+  parseDaily,
   type ParsedCurrent,
   type ParsedForecast,
+  type ParsedDaily,
 } from './openMeteo';
 import { TTLCache } from './cache';
 
 export interface WeatherData {
   current: ParsedCurrent;
   precip: ParsedForecast;
+  daily: ParsedDaily;
   cached: boolean;
   fetchedAt: string; // ISO timestamp
 }
@@ -35,7 +38,7 @@ export async function fetchWeather(
   const url = buildForecastUrl({
     latitude,
     longitude,
-    forecast_days: 1,
+    forecast_days: 7,
     timezone: 'auto',
   });
 
@@ -47,10 +50,12 @@ export async function fetchWeather(
   const data = await response.json();
   const current = parseCurrent(data);
   const precip = parseHourlyPrecip(data);
+  const daily = parseDaily(data);
 
   const result: WeatherData = {
     current,
     precip,
+    daily,
     cached: false,
     fetchedAt: new Date().toISOString(),
   };
