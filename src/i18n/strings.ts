@@ -67,6 +67,18 @@ export type StringKey =
   | 'settings.privacy'
   | 'settings.about'
   | 'settings.attribution'
+  | 'about.title'
+  | 'about.description'
+  | 'about.version'
+  | 'about.weather'
+  | 'about.weatherDesc'
+  | 'about.online'
+  | 'about.offline'
+  | 'about.export'
+  | 'about.data'
+  | 'settings.exportDesc'
+  | 'privacy.title'
+  | 'privacy.body'
   | 'common.cancel'
   | 'common.save'
   | 'common.loading'
@@ -133,8 +145,8 @@ const TR: Strings = {
   'settings.title': 'Ayarlar',
   'settings.units': 'Birim',
   'settings.language': 'Dil',
-  'settings.units.metric': 'Metrik',
-  'settings.units.imperial': 'İngiliz',
+  'settings.units.metric': 'Metrik (km, °C)',
+  'settings.units.imperial': 'Imperial (mi, °F)',
   'settings.export': 'Dışa aktar (CSV / JSON)',
   'settings.upgrade': 'PRO kilidini aç',
   'settings.privacy': 'Gizlilik politikası',
@@ -152,6 +164,18 @@ const TR: Strings = {
   'log.weekly.distance': 'Mesafe',
   'log.weekly.duration': 'Süre',
   'log.weekly.count': 'Antrenman',
+  'about.title': 'TrailCast',
+  'about.description': 'Patika koşucuları için hava durumu + antrenman günlüğü. GPS konumunla canlı tahmin, en iyi koşu saatleri, offline-first.',
+  'about.version': 'Sürüm',
+  'about.weather': 'Hava verisi',
+  'about.weatherDesc': 'Open-Meteo.com (CC BY 4.0) — ücretsiz, API anahtarı yok, 1 km çözünürlük',
+  'about.online': 'Çevrimiçi',
+  'about.offline': 'Çevrimdışı verilerin cihazında saklanır',
+  'about.export': 'Verilerin senin',
+  'about.data': 'Sunucu yok, izleyici yok, reklam yok',
+  'settings.exportDesc': 'Tüm antrenmanlarını CSV veya JSON olarak paylaş',
+  'privacy.title': 'Gizlilik',
+  'privacy.body': 'Tüm veriler cihazında saklanır. Sunucuya hiçbir şey gönderilmez. Hava durumu için yalnızca konumun Open-Meteo API\'sine iletilir.',
 };
 
 const EN: Strings = {
@@ -205,8 +229,8 @@ const EN: Strings = {
   'settings.title': 'Settings',
   'settings.units': 'Units',
   'settings.language': 'Language',
-  'settings.units.metric': 'Metric',
-  'settings.units.imperial': 'Imperial',
+  'settings.units.metric': 'Metric (km, °C)',
+  'settings.units.imperial': 'Imperial (mi, °F)',
   'settings.export': 'Export (CSV / JSON)',
   'settings.upgrade': 'Unlock PRO',
   'settings.privacy': 'Privacy policy',
@@ -224,6 +248,18 @@ const EN: Strings = {
   'log.weekly.distance': 'Distance',
   'log.weekly.duration': 'Duration',
   'log.weekly.count': 'Sessions',
+  'about.title': 'TrailCast',
+  'about.description': 'Weather + training log for trail runners. Live forecast with GPS, best hours to run, offline-first.',
+  'about.version': 'Version',
+  'about.weather': 'Weather data',
+  'about.weatherDesc': 'Open-Meteo.com (CC BY 4.0) — free, no API key, 1 km grid',
+  'about.online': 'Online',
+  'about.offline': 'Offline data stays on your device',
+  'about.export': 'Your data is yours',
+  'about.data': 'No server, no tracking, no ads',
+  'settings.exportDesc': 'Share all sessions as CSV or JSON',
+  'privacy.title': 'Privacy',
+  'privacy.body': 'All data stays on your device. Nothing is sent to a server. For weather, only your location is sent to the Open-Meteo API.',
 };
 
 const DE: Strings = {
@@ -277,8 +313,8 @@ const DE: Strings = {
   'settings.title': 'Einstellungen',
   'settings.units': 'Einheiten',
   'settings.language': 'Sprache',
-  'settings.units.metric': 'Metrisch',
-  'settings.units.imperial': 'Imperial',
+  'settings.units.metric': 'Metrisch (km, °C)',
+  'settings.units.imperial': 'Imperial (mi, °F)',
   'settings.export': 'Export (CSV / JSON)',
   'settings.upgrade': 'PRO freischalten',
   'settings.privacy': 'Datenschutz',
@@ -296,6 +332,18 @@ const DE: Strings = {
   'log.weekly.distance': 'Distanz',
   'log.weekly.duration': 'Dauer',
   'log.weekly.count': 'Einheiten',
+  'about.title': 'TrailCast',
+  'about.description': 'Wetter + Trainingstagebuch für Trailrunner. Live-Vorhersage mit GPS, beste Laufzeiten, offline-first.',
+  'about.version': 'Version',
+  'about.weather': 'Wetterdaten',
+  'about.weatherDesc': 'Open-Meteo.com (CC BY 4.0) — kostenlos, kein API-Key, 1-km-Raster',
+  'about.online': 'Online',
+  'about.offline': 'Offline-Daten bleiben auf deinem Gerät',
+  'about.export': 'Deine Daten gehören dir',
+  'about.data': 'Kein Server, kein Tracking, keine Werbung',
+  'settings.exportDesc': 'Alle Einheiten als CSV oder JSON teilen',
+  'privacy.title': 'Datenschutz',
+  'privacy.body': 'Alle Daten bleiben auf deinem Gerät. Nichts wird an einen Server gesendet. Für Wetter wird nur dein Standort an die Open-Meteo-API übermittelt.',
 };
 
 export const STRINGS: Record<'tr' | 'en' | 'de', Strings> = {
