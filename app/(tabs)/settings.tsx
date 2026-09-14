@@ -1,4 +1,4 @@
-import { View, Text, Pressable, StyleSheet, Alert } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Alert, ScrollView } from 'react-native';
 import Constants from 'expo-constants';
 import { useSettings, type Language, type Units } from '@/state/settings';
 import { t } from '@/i18n/strings';
@@ -23,7 +23,12 @@ export default function SettingsScreen() {
   };
 
   return (
-    <View style={styles.container} testID="settings-screen">
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={styles.content}
+      testID="settings-screen"
+      keyboardShouldPersistTaps="handled"
+    >
       <Section title={t(language, 'settings.units')}>
         <ToggleRow
           label={t(language, 'settings.units.metric')}
@@ -102,7 +107,7 @@ export default function SettingsScreen() {
           <Text style={styles.rowInfoText}>{t(language, 'about.offline')}</Text>
         </View>
       </Section>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -138,7 +143,8 @@ function ToggleRow({
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#F8FAFC', padding: 16, gap: 16 },
+  container: { flex: 1, backgroundColor: '#F8FAFC' },
+  content: { padding: 16, gap: 16, paddingBottom: 48 },
   section: { gap: 8 },
   sectionTitle: { fontSize: 12, fontWeight: '700', color: '#475569', textTransform: 'uppercase' },
   sectionBody: { backgroundColor: '#FFFFFF', borderRadius: 12, borderWidth: 1, borderColor: '#E2E8F0', overflow: 'hidden' },

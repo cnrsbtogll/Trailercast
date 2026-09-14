@@ -18,6 +18,7 @@
     "android": {
       "package": "app.trailcast.android",
       "versionCode": 2,
+      "softwareKeyboardLayoutMode": "resize",
       "permissions": [
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.ACCESS_COARSE_LOCATION"

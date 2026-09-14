@@ -58,6 +58,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#E2E8F0',
     gap: 8,
+    marginBottom: 16,
   },
   title: { fontSize: 14, fontWeight: '600', color: '#475569' },
   row: { flexDirection: 'row', justifyContent: 'space-between' },

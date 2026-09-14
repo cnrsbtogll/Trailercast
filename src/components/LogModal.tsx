@@ -155,8 +155,9 @@ export function LogModal({ visible, onClose, onSaved }: Props) {
     <Modal visible={visible} animationType="slide" transparent onRequestClose={handleClose}>
       <View style={styles.backdrop}>
         <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={styles.kav}
+          keyboardVerticalOffset={0}
         >
           <View style={styles.sheet} testID="log-modal">
             <View style={styles.accentBar} />
@@ -355,7 +356,7 @@ const styles = StyleSheet.create({
   },
   closeText: { fontSize: 16, color: '#475569', fontWeight: '600' },
   scroll: { flexGrow: 0 },
-  scrollContent: { paddingHorizontal: 20, paddingBottom: 8, gap: 0 },
+  scrollContent: { paddingHorizontal: 20, paddingBottom: 24, gap: 0 },
   label: {
     fontSize: 11,
     fontWeight: '700',
